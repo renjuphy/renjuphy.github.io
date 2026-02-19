@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Renjith Raveendran Pillai - First-Principles Design of Functional Materials</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a3a52;
+            --secondary: #2d5f7f;
+            --accent: #d4af37;
+            --text: #2c2c2c;
+            --text-light: #5a5a5a;
+            --bg: #fdfbf7;
+            --card-bg: #ffffff;
+            --border: #e8dcc8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Decorative Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(26, 58, 82, 0.03) 0%, transparent 50%),
+                linear-gradient(135deg, transparent 0%, rgba(212, 175, 55, 0.01) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem 2rem 3rem;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, 20px) rotate(5deg); }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            font-size: 0.95rem;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+
+        .contact-item:hover {
+            opacity: 1;
+        }
+
+        .contact-item a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            transition: border-color 0.3s;
+        }
+
+        .contact-item a:hover {
+            border-color: var(--accent);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--card-bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 2.5rem;
+            overflow-x: auto;
+        }
+
+        .nav-content::-webkit-scrollbar {
+            height: 2px;
+        }
+
+        .nav-content::-webkit-scrollbar-thumb {
+            background: var(--accent);
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 1.2rem 0;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+            border-bottom-color: var(--accent);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+        }
+
+        h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            transform: scaleY(0);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        .card:hover::before {
+            transform: scaleY(1);
+        }
+
+        /* Research Interests */
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .interest-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 1.8rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .interest-card::before {
+            content: '→';
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--accent);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s;
+        }
+
+        .interest-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        }
+
+        .interest-card:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* Publications */
+        .publication {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .publication::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .publication-title {
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+            line-height: 1.5;
+        }
+
+        .publication-authors {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.3rem;
+        }
+
+        .publication-journal {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-style: italic;
+        }
+
+        .publication a {
+            color: var(--secondary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .publication a:hover {
+            border-bottom-color: var(--secondary);
+        }
+
+        .doi-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: var(--primary);
+            color: white !important;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.7rem;
+            border-radius: 4px;
+            border-bottom: none !important;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            vertical-align: middle;
+            margin-left: 0.4rem;
+        }
+
+        .doi-link::before {
+            content: '🔗';
+            font-size: 0.7rem;
+        }
+
+        .doi-link:hover {
+            background: var(--accent) !important;
+            color: var(--primary) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(212, 175, 55, 0.4);
+            border-bottom: none !important;
+        }
+
+        /* Employment Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-top: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent) 0%, var(--border) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3.4rem;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 3px solid var(--bg);
+        }
+
+        .timeline-year {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-org {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Expertise Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .tag:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.2);
+        }
+
+        /* Show More Button */
+        .show-more {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 58, 82, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        footer p {
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            main {
+                padding: 2rem 1rem;
+            }
+        }
+
+        /* Hidden Publications */
+        .publications-hidden {
+            display: none;
+        }
+
+        .publications-visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Dr. Renjith Raveendran Pillai</h1>
+            <p class="subtitle">Ph.D. | First-Principles Design of Functional Materials for Optoelectronics, NLO & Biosensing</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📧</span>
+                    <a href="mailto:drrenjith@gck.ac.in">drrenjith@gck.ac.in</a>
+                </div>
+                <div class="contact-item">
+                    <span>📧</span>
+                    <a href="mailto:renjithkadavoor@gmail.com">renjithkadavoor@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <span>📱</span>
+                    <span>+91 828 156 0152</span>
+                </div>
+                <div class="contact-item">
+                    <span>🔬</span>
+                    <a href="https://orcid.org/0000-0002-0669-4045" target="_blank">ORCID</a>
+                </div>
+                <div class="contact-item">
+                    <span>📚</span>
+                    <a href="https://scholar.google.co.in/citations?user=5Xrgrv4AAAAJ&hl=en" target="_blank">Google Scholar</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-content">
+            <a href="#about">About</a>
+            <a href="#research">Research</a>
+            <a href="#publications">Publications</a>
+            <a href="#employment">Employment</a>
+            <a href="#education">Education</a>
+            <a href="#projects">Projects</a>
+            <a href="#awards">Awards</a>
+        </div>
+    </nav>
+
+    <main>
+        <section id="about">
+            <h2>About</h2>
+            <div class="card">
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    Assistant Professor at the Department of Physics, Government College Kasaragod, with expertise in computational chemistry and materials science. My research focuses on predicting material properties through advanced computational techniques, developing functional materials for nonlinear optical and optoelectronic applications, and modeling two-dimensional nanomaterials for biosensing applications.
+                </p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">576</div>
+                    <div class="stat-label">Total Citations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">h-index</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">34+</div>
+                    <div class="stat-label">Publications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">PhD Students</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="research">
+            <h2>Research Interests</h2>
+            <div class="interests-grid">
+                <div class="interest-card">
+                    <h3>Computational Chemistry</h3>
+                    <p>Application of computational chemistry techniques for predicting material properties using DFT and molecular dynamics.</p>
+                </div>
+                <div class="interest-card">
+                    <h3>Energetic Materials</h3>
+                    <p>Investigating structural and dynamic properties of high energetic materials.</p>
+                </div>
+                <div class="interest-card">
+                    <h3>Functional Materials</h3>
+                    <p>Development of functional materials for non-linear optical and optoelectronic applications.</p>
+                </div>
+                <div class="interest-card">
+                    <h3>Nanomaterials</h3>
+                    <p>Modeling of 2D-nanomaterials for biosensing applications.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem;">Research Expertise</h3>
+            <div class="card">
+                <h4 style="color: var(--secondary); margin-bottom: 1rem;">Modeling Methods</h4>
+                <div class="tags">
+                    <span class="tag">DFT</span>
+                    <span class="tag">Molecular Dynamics</span>
+                    <span class="tag">Molecular Docking</span>
+                </div>
+
+                <h4 style="color: var(--secondary); margin: 2rem 0 1rem;">Program Packages</h4>
+                <div class="tags">
+                    <span class="tag">Gaussian</span>
+                    <span class="tag">Dalton</span>
+                    <span class="tag">ORCA</span>
+                    <span class="tag">Autodock</span>
+                    <span class="tag">Multiwfn</span>
+                    <span class="tag">VMD</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="publications">
+            <h2>Selected Publications</h2>
+            <p style="margin-bottom: 2rem; color: var(--text-light);">Recent publications from peer-reviewed journals and book chapters.</p>
+
+            <div id="publications-2025">
+                <h3>2025</h3>
+                
+                <div class="publication">
+                    <div class="publication-title">Through-space charge transfer enabled design of nonlinear optical chromophores with balanced absorption and efficiency</div>
+                    <div class="publication-authors">Arjun, J., Aneesh Kumar, R., Kaur, N., <strong>Renjith, R.</strong>, Jacob, R., & Padmanaban, R.</div>
+                    <div class="publication-journal">Phys. Chem. Chem. Phys., 27, 25900–25912. <a href="https://doi.org/10.1039/D5CP03491D" target="_blank" class="doi-link">DOI</a></div>
+                </div>
+
+                <div class="publication">
+                    <div class="publication-title">Solvent-dependent electronic, photophysical and nonlinear optical properties of azulene-based push-pull chromophores: A DFT approach</div>
+                    <div class="publication-authors">Dhanya, P. K., Arjun, J., Kaur, N., & <strong>Renjith, R.</strong></div>
+                    <div class="publication-journal">Journal of Molecular Graphics and Modelling, 109180. <a href="https://doi.org/10.1016/j.jmgm.2025.109180" target="_blank" class="doi-link">DOI</a></div>
+                </div>
+
+                <div class="publication">
+                    <div class="publication-title">DFT exploration of the solvent-dependent electronic and nonlinear optical properties of naphthyridine-stilbene dyads</div>
+                    <div class="publication-authors">Dhanya, P. K., Kaur, N., & <strong>Renjith, R.</strong></div>
+                    <div class="publication-journal">Spectrochimica Acta Part A, 345, 126715. <a href="https://doi.org/10.1016/j.saa.2025.126715" target="_blank" class="doi-link">DOI</a></div>
+                </div>
+
+                <div class="publication">
+                    <div class="publication-title">Tailoring functionalized 2,3-diaza-1,3-butadienes for high-energy and insensitive applications</div>
+                    <div class="publication-authors">Hridya, R., Chandran R., P., Vĳayan Nair, S., <strong>Renjith, R.</strong>, & Rahana, A.</div>
+                    <div class="publication-journal">Journal of Molecular Graphics and Modelling, 138, 109024. <a href="https://doi.org/10.1016/j.jmgm.2025.109024" target="_blank" class="doi-link">DOI</a></div>
+                </div>
+            </div>
+
+            <div id="publications-2024">
+                <h3>2024</h3>
+                
+                <div class="publication">
+                    <div class="publication-title">Solvent effects and Raman enhancement during the adsorption of atrazine on pristine Ag, Au, Cu and mixed clusters</div>
+                    <div class="publication-authors">Aneesh, K. R., Al-Otaibi, J. S., Mary, Y., Thomas, R., & <strong>Renjith, R.</strong></div>
+                    <div class="publication-journal">Computational and Theoretical Chemistry, 1237, 114628. <a href="https://doi.org/10.1016/j.comptc.2024.114628" target="_blank" class="doi-link">DOI</a></div>
+                </div>
+
+                <div class="publication">
+                    <div class="publication-title">Non-linear optical properties of 2,7-naphthyridine derivatives for optical switching applications: A DFT study</div>
+                    <div class="publication-authors">Dhanya, P. K., Chandran R., P., Vĳayan Nair, S., & <strong>Renjith, R.</strong></div>
+                    <div class="publication-journal">New J. Chem., 48, 2689–2706. <a href="https://doi.org/10.1039/D3NJ04885C" target="_blank" class="doi-link">DOI</a></div>
+                </div>
+            </div>
+
+            <div id="publications-earlier" class="publications-hidden">
+                <h3>2023</h3>
+                
+                <div class="publication">
+                    <div class="publication-title">Exploring the structural, photophysical and optoelectronic properties of a diaryl heptanoid curcum derivative and identification as a SARS-CoV-2 inhibitor</div>
+                    <div class="publication-authors">Archana, V. P., Armaković, S. J., Armaković, S., Celik, I., et al., & <strong>Renjith, R.</strong></div>
+                    <div class="publication-journal">Journal of Molecular Structure, 1281, 135110. <a href="https://doi.org/10.1016/j.molstruc.2023.135110" target="_blank" class="doi-link">DOI</a></div>
+                </div>
+
+                <h3>2022</h3>
+                
+                <div class="publication">
+                    <div class="publication-title">Synthesis, molecular modeling, quantum mechanical calculations and ADME estimation studies of benzimidazole-oxadiazole derivatives as potent antifungal agents</div>
+                    <div class="publication-authors">Çevik, U. A., Celik, I., Işık, A., <strong>Renjith, R.</strong>, et al.</div>
+                    <div class="publication-journal">Journal of Molecular Structure, 1252, 132095. <a href="https://doi.org/10.1016/j.molstruc.2021.132095" target="_blank" class="doi-link">DOI</a></div>
+                </div>
+
+                <h3>Earlier Publications</h3>
+                <div class="card">
+                    <p>Dr. Renjith has published extensively in computational chemistry and materials science, with over 30 peer-reviewed articles in high-impact journals. His early work (2014-2021) focused on spectroscopic investigations, DFT calculations, and molecular docking studies of various organic compounds and their applications.</p>
+                    <p style="margin-top: 1rem;"><a href="https://scholar.google.co.in/citations?user=5Xrgrv4AAAAJ&hl=en" target="_blank" style="color: var(--secondary); text-decoration: none; border-bottom: 1px solid var(--secondary);">View complete publication list on Google Scholar →</a></p>
+                </div>
+            </div>
+
+            <div class="show-more">
+                <button class="btn" onclick="togglePublications()">Show All Publications</button>
+            </div>
+        </section>
+
+        <section id="employment">
+            <h2>Employment History</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2023 – Present</div>
+                    <div class="timeline-title">Assistant Professor</div>
+                    <div class="timeline-org">Department of Physics, Government College Kasaragod, Kerala, India</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2021 – 2023</div>
+                    <div class="timeline-title">Assistant Professor</div>
+                    <div class="timeline-org">Department of Physics, University College, Thiruvananthapuram, Kerala, India</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2019 – 2021</div>
+                    <div class="timeline-title">Assistant Professor of Physics</div>
+                    <div class="timeline-org">Central Polytechnic College, Thiruvananthapuram, Kerala, India</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2017 – 2019</div>
+                    <div class="timeline-title">Assistant Professor</div>
+                    <div class="timeline-org">Department of Physics, T.K.M. College of Arts and Science, Kollam, Kerala, India</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2016 – 2017</div>
+                    <div class="timeline-title">UGC-FDP Guest Lecturer</div>
+                    <div class="timeline-org">Department of Physics, S.N. College, Kerala, India</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2011 – 2016</div>
+                    <div class="timeline-title">Ph.D. in Physics</div>
+                    <div class="timeline-org">University of Kerala, Thiruvananthapuram, Kerala, India</div>
+                    <p style="margin-top: 0.5rem; color: var(--text-light); font-style: italic;">Thesis: Spectroscopic Investigations of Certain Azatricyclo and Anthraquinone derivatives</p>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2008 – 2010</div>
+                    <div class="timeline-title">M.Sc. Physics</div>
+                    <div class="timeline-org">University of Kerala, Thiruvananthapuram, Kerala, India</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2005 – 2008</div>
+                    <div class="timeline-title">B.Sc. Physics</div>
+                    <div class="timeline-org">University of Kerala, Thiruvananthapuram, Kerala, India</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Funded Research Projects</h2>
+            <div class="card">
+                <h3>Developing Novel Organic π-conjugated Materials using Through Space Charge Transfer Mechanism for NLO Applications</h3>
+                <div style="margin-top: 1rem;">
+                    <p><strong>Funding Agency:</strong> SERB (Science and Engineering Research Board), India</p>
+                    <p><strong>Amount:</strong> ₹20,89,560 INR</p>
+                    <p><strong>Status:</strong> Ongoing (2023 - Present)</p>
+                    <p style="margin-top: 1rem; color: var(--text-light); line-height: 1.7;">This research project focuses on the development of novel organic π-conjugated materials utilizing through-space charge transfer mechanisms for nonlinear optical applications, contributing to advancements in photonics and optoelectronics.</p>
+                    <p style="margin-top: 1rem;">
+                        <a href="https://www.indiascienceandtechnology.gov.in/research/developing-novel-organic-%CF%80-conjugated-materials-using-through-space-charge-transfer-mechanism-nlo" target="_blank" style="display: inline-flex; align-items: center; gap: 0.4rem; color: var(--secondary); text-decoration: none; font-weight: 500; border-bottom: 1px solid var(--secondary); padding-bottom: 1px; transition: color 0.3s, border-color 0.3s;">
+                            <span>🌐</span> View on India Science & Technology Portal →
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="awards">
+            <h2>Awards & Achievements</h2>
+            <div class="card">
+                <h3>Academic Awards</h3>
+                <div style="margin-top: 1.5rem;">
+                    <div class="timeline-item" style="margin-bottom: 1.5rem;">
+                        <div class="timeline-year">2014</div>
+                        <div class="timeline-title">CSIR-UGC Senior Research Fellowship (SRF)</div>
+                    </div>
+                    <div class="timeline-item" style="margin-bottom: 1.5rem;">
+                        <div class="timeline-year">2011</div>
+                        <div class="timeline-title">GATE - All India Rank 426</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2011</div>
+                        <div class="timeline-title">CSIR-UGC Junior Research Fellowship (JRF) - All India Rank 126</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Research Supervision</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                    <div>
+                        <div class="stat-number" style="font-size: 2.5rem; color: var(--primary);">4</div>
+                        <div style="color: var(--text-light);">PhD Students (Ongoing)</div>
+                    </div>
+                    <div>
+                        <div class="stat-number" style="font-size: 2.5rem; color: var(--primary);">22</div>
+                        <div style="color: var(--text-light);">M.Sc. Projects Completed</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Professional Contributions</h3>
+                <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                    <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--accent);">•</span>
+                        District Coordinator, Sasthrapadham-2019, Samagra Shiksha, Kerala
+                    </li>
+                    <li style="margin-bottom: 1rem; padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--accent);">•</span>
+                        District Coordinator, Sasthrajalakam-2019, SIET, Kerala
+                    </li>
+                    <li style="padding-left: 1.5rem; position: relative;">
+                        <span style="position: absolute; left: 0; color: var(--accent);">•</span>
+                        Judge, State Science Fair 2020, Kerala
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Dr. Renjith Raveendran Pillai. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="mailto:drrenjith@gck.ac.in">Email</a>
+                <a href="https://orcid.org/0000-0002-0669-4045" target="_blank">ORCID</a>
+                <a href="https://scholar.google.co.in/citations?user=5Xrgrv4AAAAJ&hl=en" target="_blank">Google Scholar</a>
+            </div>
+            <p style="margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.7;">Department of Physics, Government College Kasaragod, Kerala, India</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Toggle publications
+        let showingAll = false;
+        function togglePublications() {
+            const hiddenPubs = document.getElementById('publications-earlier');
+            const btn = document.querySelector('.show-more .btn');
+            
+            if (!showingAll) {
+                hiddenPubs.classList.remove('publications-hidden');
+                hiddenPubs.classList.add('publications-visible');
+                btn.textContent = 'Show Less';
+                showingAll = true;
+            } else {
+                hiddenPubs.classList.remove('publications-visible');
+                hiddenPubs.classList.add('publications-hidden');
+                btn.textContent = 'Show All Publications';
+                showingAll = false;
+                document.getElementById('publications').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Add active state to nav links on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
